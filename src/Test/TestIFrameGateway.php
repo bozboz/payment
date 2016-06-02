@@ -20,6 +20,9 @@ class TestIFrameGateway extends ExternalGateway implements Refundable
 
 	public function purchase($data, Order $order)
 	{
+		$order->generateTransactionId();
+		$order->save();
+
 		return new TestRedirectResponse;
 	}
 
