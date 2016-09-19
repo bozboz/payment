@@ -26,12 +26,17 @@ class SagepaySpoofController extends Controller
     {
         $order = $this->order->find(Session::get('order'));
 
-        return View::make('ecommerce::checkout.sagepay-spoof')->withOrder($order);
+        return View::make('ecommerce::checkout.sagepay-spoof')->with([
+            'order' => $order,
+            'returnUrl' => Session::get('return_url')
+        ]);
     }
 
     public function notify()
     {
-        $res = json_decode($this->client->post(URL::route('checkout.billing'), [
+        $returnUrl = Request::get('return_url', URL::route('checkout.billing'));
+
+        $res = json_decode($this->client->post($returnUrl, [
             'form_params' => Request::all()
         ])->getBody()->getContents());
 
