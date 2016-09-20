@@ -15,6 +15,10 @@ class PaymentServiceProvider extends ServiceProvider
     {
         $packageRoot = __DIR__ . "/../..";
 
+        $this->publishes([
+            $packageRoot . '/config.php' => config_path('payment.php'),
+        ]);
+
         if (! $this->app->routesAreCached()) {
             require "$packageRoot/src/Http/routes.php";
         }
@@ -72,8 +76,8 @@ class PaymentServiceProvider extends ServiceProvider
 
         $this->app->bind('Bozboz\Ecommerce\Payment\ExternalGateway', function($app)
         {
-                return $app['Bozboz\Ecommerce\Payment\Test\TestIFrameGateway'];
             if ($app['config']->get('payment.test_payments')) {
+                return $app['Bozboz\Ecommerce\Payment\Test\TestIFrameGateway'];
             } else {
                 return $app['Bozboz\Ecommerce\Payment\IFrameSagePayGateway'];
             }
