@@ -49,7 +49,7 @@ class PaymentServiceProvider extends ServiceProvider
             $gateway->setTestMode($app['config']->get('payment.sagepay.testMode'));
             $gateway->setVendor($app['config']->get('payment.sagepay.vendor'));
 
-            return new Payment\SagePayGateway($gateway, $app['validator']);
+            return new \Bozboz\Ecommerce\Payment\SagePayGateway($gateway, $app['validator']);
         });
 
         $this->app->bind('Bozboz\Ecommerce\Payment\IFrameSagePayGateway', function($app)
@@ -71,7 +71,7 @@ class PaymentServiceProvider extends ServiceProvider
 
             list($server, $direct) = $gateways;
 
-            return new Payment\IFrameSagePayGateway($server, $direct, $app['url'], $app['request']);
+            return new \Bozboz\Ecommerce\Payment\IFrameSagePayGateway($server, $direct, $app['url'], $app['request']);
         });
 
         $this->app->bind('Bozboz\Ecommerce\Payment\ExternalGateway', function($app)
