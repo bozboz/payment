@@ -48,9 +48,8 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 		$order->generateTransactionId();
 		$order->save();
 
-		$paymentData = [
+		$paymentData = $data + [
 			'profile' => 'LOW',
-			'returnUrl' => $this->url->route('checkout.callback'),
 			'amount' => number_format($order->totalPrice() / 100, 2),
 			'currency' => 'GBP',
 			'card' => $this->getAddressDetails($order),
