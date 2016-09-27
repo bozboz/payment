@@ -3,6 +3,7 @@
 namespace Bozboz\Ecommerce\Payment\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Omnipay\Omnipay;
 
 class PaymentServiceProvider extends ServiceProvider
 {
@@ -45,7 +46,6 @@ class PaymentServiceProvider extends ServiceProvider
         {
             $gateway = Omnipay::create('SagePay_Direct');
 
-            $gateway->setSimulatorMode($app['config']->get('payment.sagepay.simulatorMode'));
             $gateway->setTestMode($app['config']->get('payment.sagepay.testMode'));
             $gateway->setVendor($app['config']->get('payment.sagepay.vendor'));
 
@@ -59,12 +59,10 @@ class PaymentServiceProvider extends ServiceProvider
                 Omnipay::create('SagePay_Direct')
             ];
 
-            $simulatorMode = $app['config']->get('payment.sagepay.simulatorMode');
             $testMode = $app['config']->get('payment.sagepay.testMode');
             $vendor = $app['config']->get('payment.sagepay.vendor');
 
             foreach($gateways as $gateway) {
-                $gateway->setSimulatorMode($simulatorMode);
                 $gateway->setTestMode($testMode);
                 $gateway->setVendor($vendor);
             }
