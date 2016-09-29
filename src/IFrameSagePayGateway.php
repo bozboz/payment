@@ -140,6 +140,8 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 	 */
 	public function refund(array $data, Order $order)
 	{
+		$order->generateTransactionId();
+
 		$refundData = $data + [
 			'amount' => number_format($order->totalPrice() * - 1 / 100, 2),
 			'currency' => 'GBP',
