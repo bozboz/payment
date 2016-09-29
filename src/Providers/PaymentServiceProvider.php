@@ -39,7 +39,22 @@ class PaymentServiceProvider extends ServiceProvider
             $gateway->setBrandName($app['config']->get('payment.paypal.brand_name'));
             $gateway->setTestMode($app['config']->get('payment.paypal.sandbox_mode_enabled'));
 
-            return new Payment\PayPalGateway($gateway, $app['url']);
+            return new \Bozboz\Ecommerce\Payment\PayPalGateway($gateway, $app['url']);
+        });
+
+        $this->app->bind('Bozboz\Ecommerce\Payment\PayPalInContextGateway', function($app)
+        {
+            $gateway = Omnipay::create('PayPal_ExpressInContext');
+
+            $key = $app['config']->get('payment.paypal.sandbox_mode_enabled') ? 'sandbox' : 'live';
+
+            $gateway->setUsername($app['config']->get('payment.paypal.' . $key . '_username'));
+            $gateway->setPassword($app['config']->get('payment.paypal.' . $key . '_password'));
+            $gateway->setSignature($app['config']->get('payment.paypal.' . $key . '_signature'));
+            $gateway->setBrandName($app['config']->get('payment.paypal.brand_name'));
+            $gateway->setTestMode($app['config']->get('payment.paypal.sandbox_mode_enabled'));
+
+            return new \Bozboz\Ecommerce\Payment\PayPalInContextGateway($gateway, $app['url']);
         });
 
         $this->app->bind('Bozboz\Ecommerce\Payment\SagePayGateway', function($app)

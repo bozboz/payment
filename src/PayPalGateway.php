@@ -2,14 +2,14 @@
 
 namespace Bozboz\Ecommerce\Payment;
 
-use Omnipay\PayPal\ExpressGateway;
 use Bozboz\Ecommerce\Orders\Order;
 use Illuminate\Routing\UrlGenerator;
+use Omnipay\PayPal\ExpressGateway;
 
 class PayPalGateway extends ExternalGateway
 {
-	private $gateway;
-	private $url;
+	protected $gateway;
+	protected $url;
 
 	public function __construct(ExpressGateway $gateway, UrlGenerator $url)
 	{
@@ -30,7 +30,7 @@ class PayPalGateway extends ExternalGateway
 		$order->payment_ref = $response->getTransactionReference();
 		$order->save();
 
-		return $response;;
+		return $response;
 	}
 
 	public function completePurchase(Order $order)
@@ -41,23 +41,33 @@ class PayPalGateway extends ExternalGateway
 		return $request->send();
 	}
 
-	private function orderDetails(Order $order)
+	protected function orderDetails(Order $order)
 	{
 		return [
 			'amount' => number_format($order->totalprice() / 100, 2),
-			'returnUrl' => $this->url->route('checkout.callback.completed'),
-			'cancelUrl' => $this->url->route('checkout.callback.cancel'),
+			'returnUrl' => $this->url->route($this->returnRoute()),
+			'cancelUrl' => $this->url->route($this->cancelRoute()),
 			'currency' => 'gbp',
 			'transactionId' => $order->getTransactionId(),
 		];
 	}
 
-	private function orderToArray($order)
+	protected function returnRoute()
+	{
+		return 'checkout.callback.completed';
+	}
+
+	protected function cancelRoute()
+	{
+		return 'checkout.callback.cancel';
+	}
+
+	protected function orderToArray($order)
 	{
 		$orderItems = [];
 		foreach ($order->items as $orderItem) {
 			$orderItems[] = [
-				'name' => $orderItem->name,
+				'name' => strip_tags($orderItem->name),
 				'quantity' => $orderItem->quantity,
 				'price' => number_format($orderItem->price_pence / 100, 2)
 			];
