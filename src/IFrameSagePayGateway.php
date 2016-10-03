@@ -99,6 +99,12 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 	 */
 	private function getAddressDetails(Order $order)
 	{
+		$details = [
+			'email' => $order->customer_email,
+			'phone' => $order->customer_phone,
+			'company' => $order->customer_company,
+		];
+
 		$addressDetails = [
 			'name' => 'name',
 			'address1' => 'address_1',
@@ -109,8 +115,6 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 			'country' => 'country',
 			'phone' => 'phone',
 		];
-
-		$details = array();
 
 		foreach(['billing', 'shipping'] as $type) {
 			foreach($addressDetails as $key => $value) {
