@@ -18,18 +18,20 @@ class TestGatewayResponse extends AbstractResponse
 
 	public function confirm($url)
 	{
-		return Response::json([
+		echo json_encode([
 			'Status' => 'OK',
 			'RedirectUrl' => $url
 		]);
+		exit;
 	}
 
 	public function invalid($invalidUrl, $reason)
 	{
-		return Response::json([
+		echo json_encode([
 			'Status' => 'INVALID',
 			'RedirectUrl' => $invalidUrl,
 			'StatusDetail' => $reason
 		]);
+		exit;
 	}
 }
