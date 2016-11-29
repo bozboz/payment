@@ -18,7 +18,10 @@ class PayPalInContextGateway extends PayPalGateway
         $order->generateTransactionId();
         $order->save();
 
-        $request = $this->gateway->authorize($this->orderDetails($order));
+        $orderDetails = $this->orderDetails($order);
+        $orderDetails['card']['billingCountry'] = $order->shipping_country;
+        $request = $this->gateway->authorize($orderDetails);
+
         $request->setItems($this->orderToArray($order));
 
         $response = $request->send();
@@ -53,7 +56,7 @@ class PayPalInContextGateway extends PayPalGateway
 
     public function processCheckoutData($data)
     {
-        return (object)[
+        return json_decode(json_encode([
             'customer' => [
                 'customer_email' => $data->EMAIL,
                 'customer_first_name' => $data->FIRSTNAME,
@@ -66,7 +69,7 @@ class PayPalInContextGateway extends PayPalGateway
                 'country' => $data->SHIPTOCOUNTRYCODE,
                 'postcode' => $data->SHIPTOZIP,
             ],
-        ];
+        ]));
     }
 
     protected function returnRoute()
