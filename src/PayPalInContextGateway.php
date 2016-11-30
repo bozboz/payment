@@ -79,6 +79,6 @@ class PayPalInContextGateway extends PayPalGateway
 
     protected function cancelRoute()
     {
-        return 'paypal.confirm';
+        return 'cart';
     }
 }
