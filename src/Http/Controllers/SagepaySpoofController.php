@@ -36,7 +36,9 @@ class SagepaySpoofController extends Controller
     {
         $returnUrl = Request::get('return_url') ?: URL::route('checkout.billing');
 
-        $res = json_decode($this->client->post($returnUrl, [
+        $client = new Client(['verify' => false]);
+
+        $res = json_decode($client->post($returnUrl, [
             'form_params' => Request::all()
         ])->getBody()->getContents());
 
