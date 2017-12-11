@@ -76,7 +76,7 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 		$paymentData = [
 			'transactionId' => $order->getTransactionId(),
 			'transactionReference' => $order->payment_ref,
-			'amount' => number_format($order->totalPrice() / 100, 2),
+			'amount' => number_format($order->totalPrice() / 100, 2, '.', ''),
 			'currency' => 'GBP'
 		];
 
