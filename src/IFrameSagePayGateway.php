@@ -50,7 +50,7 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 
 		$paymentData = $data + [
 			'profile' => 'LOW',
-			'amount' => number_format($order->totalPrice() / 100, 2),
+			'amount' => number_format($order->totalPrice() / 100, 2, '.', ''),
 			'currency' => 'GBP',
 			'card' => $this->getAddressDetails($order),
 			'description' => 'Order from ' . gethostname(),
