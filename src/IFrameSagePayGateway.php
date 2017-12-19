@@ -147,7 +147,7 @@ class IFrameSagePayGateway extends ExternalGateway implements Refundable
 		$order->generateTransactionId();
 
 		$refundData = $data + [
-			'amount' => number_format($order->totalPrice() * - 1 / 100, 2, '.', ''),
+			'amount' => number_format($order->totalPrice() / 100, 2, '.', ''),
 			'currency' => 'GBP',
 			'description' => 'Refunded order from ' . gethostname(),
 			'transactionId' => $order->getTransactionId(),
