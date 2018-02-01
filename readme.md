@@ -4,7 +4,7 @@
 
 1. See http://gitlab.lab/laravel-packages/ecommerce
 2. Run `php artisan vendor:publish && php artisan migrate` 
-3. Edit `config/payment.php` (see [Order States](#order-states))
+3. Edit `config/payment.php`
 
 ## Usage
 
