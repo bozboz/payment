@@ -21,9 +21,9 @@ class StripeGateway extends CreditCardGateway implements Refundable
     protected $validatorFactory;
     private $retrying;
 
-    public function __construct(Gateway $gateway, Validator $validatorFactory)
+    public function __construct(array $config, Validator $validatorFactory)
     {
-        $this->gateway = $gateway;
+        $this->config = $config;
         $this->validatorFactory = $validatorFactory;
     }
 

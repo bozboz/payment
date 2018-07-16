@@ -8,6 +8,9 @@
     "require": {
         "symfony/http-foundation": "^2.8",
         "omnipay/sagepay": "^2.3",
+        "omnipay/paypal": "~2.4",
+        "omnipay/stripe": "~2.0",
+        "stripe/stripe-php": "^4.8",
         "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {

@@ -2,8 +2,10 @@
 
 namespace Bozboz\Ecommerce\Payment\Providers;
 
+use Bozboz\Ecommerce\Payment\StripeGateway;
 use Illuminate\Support\ServiceProvider;
 use Omnipay\Omnipay;
+use Stripe\Stripe;
 
 class PaymentServiceProvider extends ServiceProvider
 {
@@ -103,6 +105,15 @@ class PaymentServiceProvider extends ServiceProvider
             } else {
                 return $app['Bozboz\Ecommerce\Payment\SagePayGateway'];
             }
+        });
+
+        $this->app->bind('Bozboz\Ecommerce\Payment\StripeGateway', function($app)
+        {
+            $config = $this->app['config']->get('payment.stripe');
+
+            Stripe::setApiKey($config['secretKey']);
+
+            return new StripeGateway($config, $app['validator']);
         });
     }
 }

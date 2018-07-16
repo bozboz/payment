@@ -5,6 +5,7 @@ namespace Bozboz\Ecommerce\Payment\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Bozboz\Ecommerce\Orders\Order;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,10 +39,16 @@ class SagepaySpoofController extends Controller
 
         $client = new Client(['verify' => false]);
 
-        $res = json_decode($client->post($returnUrl, [
-            'form_params' => Request::all()
-        ])->getBody()->getContents());
-
+        try {
+            $res = json_decode($client->post($returnUrl, [
+                'form_params' => Request::all()
+            ])->getBody()->getContents());
+        } catch (RequestException $e) {
+            echo $e->getRequest()->getBody()->getContents();
+            if ($e->hasResponse()) {
+                echo $e->getResponse()->getBody()->getContents();
+            }
+        }
         return Redirect::to($res->RedirectUrl);
     }
 }
