@@ -2,7 +2,7 @@
 
 namespace Bozboz\Ecommerce\Payment;
 
-use Bozboz\Ecommerce\Customer\Customer;
+use Bozboz\Ecommerce\Customer\CustomerInterface as Customer;
 use Bozboz\Ecommerce\Orders\Exception;
 use Bozboz\Ecommerce\Orders\Order;
 use Bozboz\Ecommerce\Payment\Exception as PaymentException;
@@ -37,6 +37,8 @@ class StripeGateway extends CreditCardGateway implements Refundable
     public function purchase($data, Order $order)
     {
         $token = $data['stripeToken'];
+
+        //dd($order);
 
         try {
             $customer = $this->getOrCreateCustomer($order->user, $token);
@@ -111,7 +113,7 @@ class StripeGateway extends CreditCardGateway implements Refundable
         }
     }
 
-    public function getOrCreateCustomer(Customer $customer, $token)
+    public function getOrCreateCustomer($customer, $token)
     {
         if ($customer->stripe_id) {
             return StripeCustomer::retrieve($customer->stripe_id);
